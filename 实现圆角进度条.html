@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .con {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background-color: skyblue;
+            margin: 100px auto;
+            border-radius: 50%;
+        }
+
+        .inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            transform: translate(-50%, -50%);
+            background-color: pink;
+            border-radius: 50%;
+            z-index: 1000;
+        }
+
+        .left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 200px;
+            border-radius: 100px 0 0 100px;
+            transform-origin: 100px 100px;
+            background-color: yellow;
+            transition: transform 0.5s linear;
+        }
+
+        .right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 200px;
+            border-radius: 0 100px 100px 0;
+            background-color: yellow;
+            transform-origin: 0 100px;
+            transition: transform 0.5s linear;
+            z-index: 10;
+        }
+
+        .secondright {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 200px;
+            border-radius: 0 100px 100px 0;
+            background-color: skyblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="con">
+        <div class="inner">
+        </div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="secondright"></div>
+    </div>
+    <script>
+        let right = document.getElementsByClassName('right')[0];
+        let left = document.getElementsByClassName('left')[0];
+        let secondRight = document.getElementsByClassName('secondRight')[0];
+        let n = 0;
+        n = prompt("请输入进度条的百分比(0-100)：")
+        n = n * 360 / 100;
+        if (Number(n) <= 180 && n >= 0) {
+            right.style.transform = `rotate(${n}deg)`;
+        } else if (Number(n) >= 180 && Number(n) <= 360) {
+            right.style.transform = `rotate(${n}deg)`;
+            right.style.zIndex = 0;
+            left.style.transform = `rotate(${n - 180}deg)`;
+            secondRight.style.zIndex = 100;
+        } else {
+            alert("输入不合法哦~")
+        }
+    </script>
+</body>
+
+</html>

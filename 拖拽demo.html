@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            height: 2000px;
+        }
+
+        div {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box1">1</div>
+    <script>
+        window.onload = function () {
+            var box1 = document.getElementById("box1");
+            var left = 0, top = 0, innerleft = 0, innertop = 0, scrollLeft = 0, scrollTop = 0;
+            box1.onmousedown = function (event) {
+                innerleft = event.clientX - box1.offsetLeft;
+                innertop = event.clientY - box1.offsetTop;
+                document.onmousemove = function (event) {
+                    event = event || window.enent;
+                    left = event.clientX;
+                    top = event.clientY;
+                    box1.style.left = left - innerleft + 'px';
+                    box1.style.top = top - innertop + 'px';
+                }
+                document.onmouseup = function () {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                    document.onscroll = null;
+                }
+                box1.onmousewheel=function(event){
+                    // 判断鼠标滚动方向 120向上 -120向下(大于零向上)
+                    console.log(event.wheelDelta);
+                }
+
+                // 拖拽网页的内容时，李兰器默认回去搜索这个内容，例如文字，这是默认行为，return false可以取消
+                return false;
+            }
+        }
+
+    </script>
+</body>
+
+</html>

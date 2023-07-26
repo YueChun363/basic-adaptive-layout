@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box1 {
+            position: relative;
+            width: 500px;
+            height: 300px;
+            background-color: pink;
+            margin: 200px auto;
+            overflow: hidden;
+        }
+
+        #box1 .bottomItem {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 10px;
+        }
+
+        .bottomItem div {
+            width: 13px;
+            height: 10px;
+            background-color: pink;
+            cursor: pointer;
+        }
+
+        #inner {
+            display: flex;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 3000px;
+            height: 290px;
+            background-color: skyblue;
+            transition: left 0.2s ease-in-out;
+        }
+
+        #inner img {
+            width: 16.667%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="box1">
+        <div id="inner">
+            <img src="1.webp" alt="">
+            <img src="2.webp" alt="">
+            <img src="3.webp" alt="">
+            <img src="4.webp" alt="">
+            <img src="5.webp" alt="">
+            <img src="1.webp" alt="">
+        </div>
+        <div class="bottomItem">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            let inner = document.getElementById("inner");
+            let bottomItem = document.getElementsByClassName("bottomItem")[0].children;
+            bottomItem[0].style.backgroundColor = "red"; //初始化第一个选中按钮颜色
+            let n, isTransition = false;//选中按钮的n，是否要过渡效果
+            let moveFun; //用它来立即执行迭代器
+            function setTime() {
+                return setInterval(moveFun = () => {
+                    var beforeLeft = inner.style.left;
+                    var numBeforeLeft = Number(beforeLeft.split("px")[0]);
+                    inner.style.left = numBeforeLeft - 500 + 'px';
+                    n = Math.abs(numBeforeLeft) / 500 + 1;
+                    isTransition ? inner.style.transitionDuration = 0.2 + 's' : 1;
+                    if (numBeforeLeft == -2500) {
+                        inner.style.transitionDuration = 0 + 's';
+                        isTransition = true;
+                        inner.style.left = 0 + 'px';
+                        numBeforeLeft = 0;
+                        n = 0;
+                    }
+                    n >= 5 ? n = 0 : n;
+                    bottomItem[n].style.backgroundColor = "red";
+                    for (let j = 0; j < 5; j++) {
+                        if (j == n) { continue }
+                        bottomItem[j].style.backgroundColor = "pink";
+                    }
+                    if (numBeforeLeft == -2000) {
+                        console.log(2);
+                        setTimeout(() => {
+                            moveFun();
+                        }, 200); //设置延时器时间等于过渡时间（为了让最后一张的移动效果出现）
+                        //然后立即调用下一次迭代器函数，以此来消除最后一张到第一张的过渡效果
+                    }
+                }, 2000);
+            }
+            let timer = setTime()
+            let timeout1;
+
+            for (let i = 0; i < 5; i++) {
+                bottomItem[i].addEventListener('click', (e) => {
+                    clearTimeout(timeout1);
+                    inner.style.left = - i * 500 + 'px';
+                    for (let j = 0; j < 5; j++) {
+                        bottomItem[j].style.backgroundColor = "pink";
+                    }
+                    bottomItem[i].style.backgroundColor = "red";
+                    clearInterval(timer)
+                    timeout1 = setTimeout(() => {
+                        timer = setTime()
+                    }, 500);
+                })
+            }
+        }
+    </script>
+</body>
+
+</html>
