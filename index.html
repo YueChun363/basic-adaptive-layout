@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>菜单折叠动画</title>
+    <link rel="stylesheet" href="./index.css" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="leftMenu">
+        <div class="logo">Fake Logo</div>
+        <hr />
+        <ul class="menuList">
+          <li>menuA</li>
+          <li>menuB</li>
+          <li>menuC</li>
+          <li>menuD</li>
+          <li>menuE</li>
+        </ul>
+        <div class="foldBtn">折叠收起</div>
+      </div>
+      <div class="rightContent">
+        <div class="rightTop">
+          <div class="userMsg">个人信息</div>
+          <div class="miniShowMenuBtn">菜单</div>
+        </div>
+        <div class="content">I'm content...</div>
+      </div>
+    </div>
+    <script>
+      const foldBtn = document.getElementsByClassName("foldBtn")[0];
+      const leftMenu = document.getElementsByClassName("leftMenu")[0];
+      foldBtn.addEventListener("click", () => {
+        if (leftMenu.clientWidth > 100) {
+          leftMenu.classList.remove("widthFull");
+          leftMenu.classList.add("widthShort");
+        } else {
+          leftMenu.classList.remove("widthShort");
+          leftMenu.classList.add("widthFull");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  user-select: none;
+  box-sizing: content-box;
+}
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: skyblue;
+}
+.logo {
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+}
+.leftMenu {
+  position: relative;
+  width: 200px;
+  border: 1px solid brown;
+}
+.widthFull {
+  width: 200px;
+}
+.widthShort {
+  width: 80px;
+}
+.logo,
+.leftMenu {
+  transition: all 0.3s ease-out;
+}
+@media screen and (max-width: 1000px) {
+  .leftMenu {
+    width: 80px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .leftMenu {
+    display: none;
+  }
+  .logo {
+    display: none;
+  }
+  .miniShowMenuBtn {
+    display: block !important;
+  }
+}
+
+.menuList {
+  padding: 10px;
+  margin-top: 10px;
+}
+.menuList li {
+  padding: 5px 0;
+  cursor: pointer;
+}
+.foldBtn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  cursor: pointer;
+}
+.rightContent {
+  flex: 1;
+}
+.rightContent .rightTop {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 10px;
+  border-bottom: 1px solid black;
+  line-height: 52px;
+}
+.rightTop .miniShowMenuBtn {
+  display: none;
+  cursor: pointer;
+}
+
+.rightContent .content {
+  padding: 10px;
+}
