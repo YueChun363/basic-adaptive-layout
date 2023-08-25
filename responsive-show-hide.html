@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #243a5e;
+      }
+      .ctn {
+        margin: 100px 200px;
+        background-color: #fff;
+      }
+      header {
+        display: flex;
+        position: relative;
+        align-items: center;
+        height: 50px;
+        background-color: #c8c8c8;
+        overflow-x: hidden;
+      }
+      .menu-item {
+        position: relative;
+        width: 25px;
+        min-width: 25px;
+        height: 25px;
+        text-align: center;
+        line-height: 25px;
+        background-color: #eaeaea;
+        font-size: 18px;
+        font-weight: 700;
+        margin-left: 10px;
+      }
+      .menu-item-ellipsis::after {
+        content: "...";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 25px;
+        height: 25px;
+        line-height: 15px;
+      }
+      .overflows {
+        /* display: none; */
+        position: absolute;
+        width: 50px;
+        right: 0;
+        top: 50%;
+        transform: translate(0, -50%);
+        background-color: #c8c8c8;
+        z-index: 99;
+      }
+      .over-item {
+        margin: 0 auto 0 0;
+        line-height: 15px;
+      }
+      .content {
+        height: calc(100vh - 250px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ctn">
+      <header>
+        <div class="menu-item">A</div>
+        <div class="menu-item">B</div>
+        <div class="menu-item">C</div>
+        <div class="menu-item">D</div>
+        <div class="menu-item">E</div>
+        <div class="menu-item">F</div>
+        <div class="menu-item">H</div>
+        <div class="menu-item">I</div>
+        <div class="menu-item">J</div>
+        <div class="menu-item">K</div>
+        <div class="menu-item">L</div>
+        <div class="menu-item">M</div>
+        <div class="menu-item">N</div>
+        <!-- <div class="menu-item menu-item-ellipsis"></div> -->
+        <!-- <div class="overflows">
+          <div class="menu-item over-item">...</div>
+        </div> -->
+      </header>
+      <div class="content">
+        实现一个横向宽度变窄时最右侧省略号完美盖住最后一个字母的效果（实现思路：判断菜单总宽是否大于父节点宽度，当最后一个菜单里右侧小于25px时，修改为...方块，当...方块距离右侧小于0px时，直接异常掉，再讲左一个菜单改为...方块）...
+      </div>
+    </div>
+  </body>
+  <script>
+    const menuList = document.querySelectorAll(".menu-item");
+    const header = document.querySelector("header");
+
+    window.addEventListener("resize", (e) => {
+      const menuTotalLength = menuList.length * (menuList[0].clientWidth + 10);
+      if (menuTotalLength > header.clientWidth) {
+        const showMenuLength = Math.floor(
+          header.clientWidth / (menuList[0].clientWidth + 10)
+        );
+        for (let i = 0; i < showMenuLength; i++) {
+          menuList[i].style.display = "block";
+        }
+        menuList[showMenuLength].style.display = "none";
+        console.log("bigger showMenuLength", showMenuLength);
+      } else {
+        for (let i = 0; i < menuList.length; i++) {
+          menuList[i].style.display = "block";
+        }
+      }
+    });
+  </script>
+</html>
