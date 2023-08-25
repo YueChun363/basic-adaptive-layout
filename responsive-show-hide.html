@@ -101,11 +101,15 @@
         for (let i = 0; i < showMenuLength; i++) {
           menuList[i].style.display = "block";
         }
+        // menuList[i].addclass:menu-item-ellipsis
+        
         menuList[showMenuLength].style.display = "none";
         console.log("bigger showMenuLength", showMenuLength);
       } else {
         for (let i = 0; i < menuList.length; i++) {
           menuList[i].style.display = "block";
+        // menuList[i].removeclass:menu-item-ellipsis
+
         }
       }
     });
