@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #243a5e;
+    }
+
+    .ctn {
+      margin: 100px 200px;
+      background-color: #fff;
+    }
+
+    header {
+      display: flex;
+      position: relative;
+      align-items: center;
+      height: 50px;
+      background-color: #c8c8c8;
+      overflow-x: hidden;
+    }
+
+    .menu-item {
+      position: relative;
+      width: 25px;
+      min-width: 25px;
+      height: 25px;
+      text-align: center;
+      line-height: 25px;
+      background-color: #eaeaea;
+      font-size: 18px;
+      font-weight: 700;
+      margin-left: 10px;
+    }
+
+    .menu-item-ellipsis::after {
+      content: "...";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 25px;
+      height: 25px;
+      line-height: 15px;
+    }
+
+
+    .content {
+      height: calc(100vh - 250px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ctn">
+    <header>
+    </header>
+    <div class="content">
+      实现一个横向宽度变窄时最右侧省略号完美盖住最后一个字母的效果，看antd知乎文章看到的(实现的比较粗糙，感觉可以操作菜单数组的最后一个更简单一些)...
+    </div>
+  </div>
+</body>
+<script>
+  const header = document.querySelector("header");
+  // 初始化菜单
+  const menuNameList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N']
+  const overMenuItem = document.createElement('div')
+  overMenuItem.classList.add(".menu-item")
+  overMenuItem.classList.add(".menu-item-ellipsis")
+  for (let i = 0; i < menuNameList.length; i++) {
+    const menuItem = document.createElement('div')
+    menuItem.classList.add('menu-item')
+    menuItem.innerHTML = menuNameList[i]
+    header.appendChild(menuItem)
+  }
+  // 获取菜单元素以及初始化长度信息，以及可显示菜单数量
+  const menuList = document.querySelectorAll(".menu-item");
+  const menuListNum = menuNameList.length
+  let showMenuNum = menuListNum
+  const menuItemWidth = menuList[0].clientWidth
+
+  // 获取每个菜单的真是占据宽度，包括margin padding
+  let style = window.getComputedStyle(menuList[0], null);
+  let marginingL = parseFloat(style.getPropertyValue('margin-left'));
+  let marginingR = parseFloat(style.getPropertyValue('margin-right'));
+  let paddingL = parseFloat(style.getPropertyValue('padding-left'));
+  let paddingR = parseFloat(style.getPropertyValue('padding-right'));
+  let menuItemRealWidth = Number(menuItemWidth + paddingL + paddingR + marginingL + marginingR); // 获取实际宽度
+
+  console.log('menuItemRealWidth', menuItemRealWidth)
+
+  const debounceFn = (fn, time) => {
+    let timer = null;
+    return () => {
+      if (!timer) {
+        fn()
+        timer = setTimeout(() => {
+          timer = null
+        }, time);
+      }
+    }
+  }
+  const handleFn = () => {
+    // 计算header的宽度能显示多少个菜单
+    let tmpNum = Math.floor(
+      header.clientWidth / menuItemRealWidth
+    );
+    // header很宽时限制最长显示个数为菜单的个数
+    tmpNum = tmpNum > menuListNum ? menuListNum : tmpNum
+    showMenuNum = tmpNum === 0 ? 1 : tmpNum;
+    console.log('showMenuNum', showMenuNum)
+    // 将此时前面需要显示的菜单全部重置
+    for (let i = 0; i < showMenuNum; i++) {
+      menuList[i].innerHTML = menuNameList[i]
+      menuList[i].style.display = "block";
+      menuList[i].classList.remove("menu-item-ellipsis")
+    }
+    // 将...后面的全部隐藏掉
+    for (let i = showMenuNum; i < menuListNum; i++) {
+      menuList[i].style.display = "none";
+    }
+    // 将可显示的最后一个改为...，判断可显示数为小于菜单长度时才改为...，大于等于是则直接显示全部菜单即可
+    if (showMenuNum < menuListNum) {
+      menuList[showMenuNum - 1].classList.add("menu-item-ellipsis")
+      menuList[showMenuNum - 1].innerHTML = ''
+    }
+  }
+
+  window.addEventListener("resize", debounceFn(handleFn, 100));
+</script>
+
+</html>
